@@ -1,6 +1,7 @@
 
 import { NextResponse } from 'next/server';
 import { supabase } from '../../../lib/supabase';
+import { TemplateItem } from '../../../types';
 
 export async function GET() {
   const { data, error } = await supabase
@@ -33,7 +34,7 @@ export async function POST(request: Request) {
 
   // 3. Create the snapshot items
   if (template?.items) {
-    const entryItems = template.items.map((item: any) => ({
+    const entryItems = template.items.map((item: TemplateItem) => ({
       entry_id: entry.id,
       item_text_snapshot: item.text,
       order_index: item.order_index,

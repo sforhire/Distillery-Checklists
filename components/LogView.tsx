@@ -1,4 +1,5 @@
 
+'use client';
 import React, { useState, useEffect } from 'react';
 import { Entry } from '../types';
 import { apiService } from '../services/apiService';
@@ -22,7 +23,7 @@ const LogView: React.FC<LogViewProps> = ({ onViewDetail, onBack }) => {
       const data = await apiService.getEntries();
       setEntries(data);
     } catch (error) {
-      alert('Error loading history.');
+      console.error(error);
     } finally {
       setLoading(false);
     }

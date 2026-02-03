@@ -1,4 +1,5 @@
 
+'use client';
 import React, { useState, useEffect } from 'react';
 import { ChecklistType, Template, TemplateItem } from '../types';
 import { apiService } from '../services/apiService';
@@ -23,7 +24,7 @@ const TemplateEditor: React.FC<TemplateEditorProps> = ({ onBack }) => {
       const data = await apiService.getTemplate(selectedType);
       setTemplate(data);
     } catch (error) {
-      alert('Error loading template.');
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -42,7 +43,7 @@ const TemplateEditor: React.FC<TemplateEditorProps> = ({ onBack }) => {
   };
 
   const deleteItem = async (id: string) => {
-    if (!confirm('Warning: Deleting a template item only affects future logs. Existing logs will remain unchanged. Continue?')) return;
+    if (!confirm('Warning: Deleting a template item only affects future logs. Continue?')) return;
     try {
       await apiService.deleteTemplateItem(id);
       setTemplate(prev => prev ? ({
@@ -154,7 +155,7 @@ const TemplateEditor: React.FC<TemplateEditorProps> = ({ onBack }) => {
 
       <div className="bg-amber-900/10 border border-amber-900/20 p-4 rounded-xl text-[10px] text-amber-500 uppercase font-black tracking-widest flex items-start">
         <InfoIcon className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" />
-        <p>Operational Snapshots: Modifications here only impact future log generation. Historic logs retain the version of the text they were created with.</p>
+        <p>Operational Snapshots: Modifications here only impact future log generation.</p>
       </div>
     </div>
   );
