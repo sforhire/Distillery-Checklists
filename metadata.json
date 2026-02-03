@@ -1,0 +1,5 @@
+{
+  "name": "Distillery Checklists",
+  "description": "A secure, production-ready checklist management system for distillery operations, featuring template snapshots and history logging.",
+  "requestFramePermissions": []
+}
