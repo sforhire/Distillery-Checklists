@@ -89,7 +89,7 @@ export default function App() {
         <nav className="fixed bottom-0 left-0 right-0 bg-slate-950 border-t border-slate-800 p-4 flex justify-around items-center shadow-2xl md:hidden z-50">
           <button 
             onClick={() => handleNavigate('home')}
-            className={`flex flex-col items-center transition-colors ${currentView === 'home' ? 'text-amber-500' : 'text-slate-500'}`}
+            className="flex flex-col items-center transition-colors text-slate-500 hover:text-amber-500"
           >
             <HomeIcon className="w-6 h-6" />
             <span className="text-[10px] uppercase font-bold mt-1">Home</span>
