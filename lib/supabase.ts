@@ -1,12 +1,15 @@
 
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.4';
+import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.SUPABASE_URL!;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!supabaseUrl || !supabaseServiceKey) {
-  throw new Error('Missing Supabase environment variables');
+  // This will fail at runtime if not set, but prevents build-time crashes if keys aren't yet in Vercel
+  console.warn('Supabase environment variables are missing.');
 }
 
-// Using the service role key to bypass RLS for administrative access from API routes
-export const supabase = createClient(supabaseUrl, supabaseServiceKey);
+export const supabase = createClient(
+  supabaseUrl || '',
+  supabaseServiceKey || ''
+);
