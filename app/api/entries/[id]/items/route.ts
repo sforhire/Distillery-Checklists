@@ -1,0 +1,19 @@
+
+import { NextResponse } from 'next/server';
+import { supabase } from '../../../../../lib/supabase';
+
+export async function PATCH(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
+  const { itemId, ...updates } = await request.json();
+
+  const { error } = await supabase
+    .from('checklist_entry_items')
+    .update(updates)
+    .eq('id', itemId)
+    .eq('entry_id', params.id);
+
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  return NextResponse.json({ success: true });
+}

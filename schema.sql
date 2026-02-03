@@ -1,56 +1,65 @@
 
--- Enable UUID extension
-create extension if not exists "uuid-ossp";
+-- ENABLE UUID EXTENSION
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- 1. Checklist Templates
-create table if not exists checklist_templates (
-  id uuid primary key default uuid_generate_v4(),
-  type text not null unique, -- 'opening', 'closing', 'managerial'
-  created_at timestamp with time zone default now()
+-- 1. CHECKLIST TEMPLATES
+-- Stores the master definitions for each checklist category
+CREATE TABLE IF NOT EXISTS checklist_templates (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  type TEXT NOT NULL UNIQUE, -- 'opening', 'closing', 'managerial'
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- 2. Template Items
-create table if not exists checklist_template_items (
-  id uuid primary key default uuid_generate_v4(),
-  template_id uuid references checklist_templates(id) on delete cascade,
-  text text not null,
-  order_index integer not null default 0,
-  active boolean default true,
-  created_at timestamp with time zone default now()
+-- 2. TEMPLATE ITEMS
+-- Stores the current active items for the templates. 
+-- Changing these does NOT affect existing logs.
+CREATE TABLE IF NOT EXISTS checklist_template_items (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  template_id UUID REFERENCES checklist_templates(id) ON DELETE CASCADE,
+  text TEXT NOT NULL,
+  order_index INTEGER NOT NULL DEFAULT 0,
+  active BOOLEAN DEFAULT TRUE,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- 3. Checklist Entries (The actual log)
-create table if not exists checklist_entries (
-  id uuid primary key default uuid_generate_v4(),
-  type text not null,
-  created_by_name text,
-  entry_notes text,
-  created_at timestamp with time zone default now(),
-  completed_at timestamp with time zone -- null means 'In Progress'
+-- 3. CHECKLIST ENTRIES (THE LOGS)
+-- Stores the actual sessions started by staff.
+CREATE TABLE IF NOT EXISTS checklist_entries (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  type TEXT NOT NULL,
+  created_by_name TEXT,
+  entry_notes TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  completed_at TIMESTAMP WITH TIME ZONE -- NULL means 'In Progress'
 );
 
--- 4. Entry Items (The snapshot)
-create table if not exists checklist_entry_items (
-  id uuid primary key default uuid_generate_v4(),
-  entry_id uuid references checklist_entries(id) on delete cascade,
-  item_text_snapshot text not null,
-  order_index integer not null,
-  checked boolean default false,
-  item_notes text,
-  created_at timestamp with time zone default now()
+-- 4. ENTRY ITEMS (THE SNAPSHOT)
+-- When a log is started, a snapshot of the template items is copied here.
+-- This ensures historical logs never change even if the master template is edited.
+CREATE TABLE IF NOT EXISTS checklist_entry_items (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  entry_id UUID REFERENCES checklist_entries(id) ON DELETE CASCADE,
+  item_text_snapshot TEXT NOT NULL,
+  order_index INTEGER NOT NULL,
+  checked BOOLEAN DEFAULT FALSE,
+  item_notes TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Clear existing to ensure fresh seed
-truncate checklist_template_items cascade;
-truncate checklist_templates cascade;
+-- CLEAN SEED (Safe to run multiple times, but clears existing templates/items)
+TRUNCATE checklist_template_items CASCADE;
+TRUNCATE checklist_templates CASCADE;
 
--- Initial Templates Seed
-insert into checklist_templates (type) values ('opening'), ('closing'), ('managerial');
+-- INITIAL TEMPLATE CATEGORIES
+INSERT INTO checklist_templates (type) VALUES 
+  ('opening'), 
+  ('closing'), 
+  ('managerial');
 
--- Opening Checklist Items
-with opening_template as (select id from checklist_templates where type = 'opening' limit 1)
-insert into checklist_template_items (template_id, text, order_index)
-select id, text, idx from opening_template, (values 
+-- SEEDING OPENING CHECKLIST ITEMS (From Distillery Photos)
+WITH opening_template AS (SELECT id FROM checklist_templates WHERE type = 'opening' LIMIT 1)
+INSERT INTO checklist_template_items (template_id, text, order_index)
+SELECT id, text, idx FROM opening_template, (VALUES 
   ('Put Sign Out', 0),
   ('Open Sign On', 1),
   ('Front Door Unlocked', 2),
@@ -68,12 +77,12 @@ select id, text, idx from opening_template, (values
   ('Sinks Filled', 14),
   ('Bar Mats Out', 15),
   ('Bottles Restocked On Back Bar', 16)
-) as t(text, idx);
+) AS t(text, idx);
 
--- Closing Checklist Items
-with closing_template as (select id from checklist_templates where type = 'closing' limit 1)
-insert into checklist_template_items (template_id, text, order_index)
-select id, text, idx from closing_template, (values 
+-- SEEDING CLOSING CHECKLIST ITEMS (From Distillery Photos)
+WITH closing_template AS (SELECT id FROM checklist_templates WHERE type = 'closing' LIMIT 1)
+INSERT INTO checklist_template_items (template_id, text, order_index)
+SELECT id, text, idx FROM closing_template, (VALUES 
   ('Sign Brought In', 0),
   ('Front Door Locked', 1),
   ('Doors Secured', 2),
@@ -86,4 +95,4 @@ select id, text, idx from closing_template, (values
   ('Liquors Capped', 9),
   ('Sinks Clean', 10),
   ('Bar Mats Put Away', 11)
-) as t(text, idx);
+) AS t(text, idx);
