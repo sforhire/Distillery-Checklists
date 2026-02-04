@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState } from 'react';
@@ -85,6 +84,7 @@ export default function App() {
         )}
       </main>
 
+      {/* Mobile Navigation - Only visible when NOT on home screen */}
       {currentView !== 'home' && (
         <nav className="fixed bottom-0 left-0 right-0 bg-slate-950 border-t border-slate-800 p-4 flex justify-around items-center shadow-2xl md:hidden z-50">
           <button 
