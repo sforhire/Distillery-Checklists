@@ -33,6 +33,7 @@
     "node_modules",
     "vite.config.ts",
     "index.tsx",
-    "index.html"
+    "index.html",
+    "public"
   ]
 }
