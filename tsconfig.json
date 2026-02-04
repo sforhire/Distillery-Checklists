@@ -1,3 +1,4 @@
+
 {
   "compilerOptions": {
     "target": "es5",
@@ -30,6 +31,8 @@
   ],
   "exclude": [
     "node_modules",
-    "vite.config.ts"
+    "vite.config.ts",
+    "index.tsx",
+    "index.html"
   ]
 }
