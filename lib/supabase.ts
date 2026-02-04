@@ -1,15 +1,15 @@
 
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const supabaseUrl = process.env.SUPABASE_URL || '';
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
 if (!supabaseUrl || !supabaseServiceKey) {
-  // This will fail at runtime if not set, but prevents build-time crashes if keys aren't yet in Vercel
-  console.warn('Supabase environment variables are missing.');
+  console.warn(
+    'Distillery Checklists: Supabase credentials not found. ' +
+    'API calls will fail until SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are configured in environment variables.'
+  );
 }
 
-export const supabase = createClient(
-  supabaseUrl || '',
-  supabaseServiceKey || ''
-);
+// Ensure the client doesn't throw during initialization even if keys are empty strings
+export const supabase = createClient(supabaseUrl, supabaseServiceKey);
