@@ -1,11 +1,12 @@
+
 'use client';
 
 import React, { useState } from 'react';
-import { AppView, ChecklistType } from './types';
-import Home from './components/Home';
-import EntryFlow from './components/EntryFlow';
-import LogView from './components/LogView';
-import TemplateEditor from './components/TemplateEditor';
+import { AppView, ChecklistType } from './types.ts';
+import Home from './components/Home.tsx';
+import EntryFlow from './components/EntryFlow.tsx';
+import LogView from './components/LogView.tsx';
+import TemplateEditor from './components/TemplateEditor.tsx';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<AppView>('home');

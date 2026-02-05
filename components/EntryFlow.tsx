@@ -1,8 +1,8 @@
 
 'use client';
 import React, { useState, useEffect } from 'react';
-import { ChecklistType, Entry, EntryItem } from '../types';
-import { apiService } from '../services/apiService';
+import { ChecklistType, Entry, EntryItem } from '../types.ts';
+import { apiService } from '../services/apiService.ts';
 
 interface EntryFlowProps {
   initialType?: ChecklistType | null;

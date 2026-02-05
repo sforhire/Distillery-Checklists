@@ -1,5 +1,5 @@
 
-import { ChecklistType, Entry, Template, TemplateItem, EntryItem } from '../types';
+import { ChecklistType, Entry, Template, TemplateItem, EntryItem } from '../types.ts';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ export const apiService = {
       return await res.json();
     } catch (e) {
       console.warn(`Using fallback template for ${type} (API Offline)`);
-      return MOCK_TEMPLATES[type] || { id: 'error', type, items: [] };
+      return MOCK_TEMPLATES[type] || MOCK_TEMPLATES[ChecklistType.OPENING];
     }
   },
 
@@ -94,7 +94,7 @@ export const apiService = {
       return await res.json();
     } catch (e) {
       // Fallback for creating an entry in preview
-      const template = MOCK_TEMPLATES[type];
+      const template = MOCK_TEMPLATES[type] || MOCK_TEMPLATES[ChecklistType.OPENING];
       return {
         id: `mock-entry-${Date.now()}`,
         type,
@@ -103,7 +103,7 @@ export const apiService = {
         created_by_name: createdByName,
         entry_notes: '',
         items: template.items.map(i => ({
-          id: `mock-item-${i.id}`,
+          id: `mock-item-${i.id}-${Math.random().toString(36).substr(2, 5)}`,
           entry_id: 'mock-entry',
           item_text_snapshot: i.text,
           order_index: i.order_index,
