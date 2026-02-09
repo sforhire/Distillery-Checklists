@@ -35,14 +35,14 @@ export default function App() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 pb-24 min-h-screen">
-      <header className="mb-10 flex flex-wrap gap-4 justify-between items-center border-b border-slate-800 pb-6">
+      <header className="mb-10 flex justify-between items-center border-b border-slate-800 pb-6">
         <div>
           <h1 
-            className="text-2xl md:text-3xl font-black tracking-tighter text-amber-500 cursor-pointer flex items-center"
+            className="text-3xl font-black tracking-tighter text-amber-500 cursor-pointer flex items-center"
             onClick={() => handleNavigate('home')}
           >
-            <span className="mr-2 inline-block">🥃</span>
-            <span className="inline-block">DISTILLERY CHECKLISTS</span>
+            <span className="mr-2">🥃</span>
+            DISTILLERY CHECKLISTS
           </h1>
           <p className="text-slate-500 text-[10px] uppercase tracking-widest font-black mt-1">Quality & Safety Controls</p>
         </div>
@@ -85,7 +85,7 @@ export default function App() {
         )}
       </main>
 
-      {/* Mobile Navigation */}
+      {/* Mobile Navigation - Only visible when NOT on home screen */}
       {currentView !== 'home' && (
         <nav className="fixed bottom-0 left-0 right-0 bg-slate-950 border-t border-slate-800 p-4 flex justify-around items-center shadow-2xl md:hidden z-50">
           <button 
@@ -109,8 +109,8 @@ export default function App() {
 }
 
 const HomeIcon = ({ className }: { className?: string }) => (
-  <svg width="24" height="24" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
 );
 const ListIcon = ({ className }: { className?: string }) => (
-  <svg width="24" height="24" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" /></svg>
+  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" /></svg>
 );
