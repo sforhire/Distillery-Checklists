@@ -2,6 +2,8 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '../../../../../lib/supabase';
 
+export const runtime = 'nodejs';
+
 export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
