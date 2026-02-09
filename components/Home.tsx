@@ -1,7 +1,7 @@
 
 'use client';
 import React from 'react';
-import { AppView, ChecklistType } from '../types';
+import { AppView, ChecklistType } from '../types.ts';
 
 interface HomeProps {
   onNavigate: (view: AppView) => void;

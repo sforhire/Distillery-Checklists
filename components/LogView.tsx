@@ -1,8 +1,8 @@
 
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Entry } from '../types';
-import { apiService } from '../services/apiService';
+import { Entry } from '../types.ts';
+import { apiService } from '../services/apiService.ts';
 
 interface LogViewProps {
   onViewDetail: (id: string) => void;

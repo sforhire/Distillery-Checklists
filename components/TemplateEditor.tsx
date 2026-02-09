@@ -1,8 +1,8 @@
 
 'use client';
 import React, { useState, useEffect } from 'react';
-import { ChecklistType, Template, TemplateItem } from '../types';
-import { apiService } from '../services/apiService';
+import { ChecklistType, Template, TemplateItem } from '../types.ts';
+import { apiService } from '../services/apiService.ts';
 
 interface TemplateEditorProps {
   onBack: () => void;
